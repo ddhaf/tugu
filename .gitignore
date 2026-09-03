@@ -1,0 +1,51 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+coverage/
+
+# Laravel
+tugu-backend/vendor/
+tugu-backend/public/build/
+tugu-backend/public/hot
+tugu-backend/public/storage/
+tugu-backend/storage/*.key
+tugu-backend/storage/pail/
+tugu-backend/.phpunit.result.cache
+tugu-backend/.phpunit.cache
+
+# Laravel local/editor files
+tugu-backend/.fleet/
+tugu-backend/.idea/
+tugu-backend/.nova/
+tugu-backend/.vscode/
+tugu-backend/.zed/
+tugu-backend/auth.json
+
+# Frontend local/editor files
+tugu-frontend/.vscode/
+tugu-frontend/.idea/
+tugu-frontend/.eslintcache
+tugu-frontend/*.tsbuildinfo
+tugu-frontend/*.local
+
+# Test / Cypress
+tugu-frontend/cypress/videos/
+tugu-frontend/cypress/screenshots/
+tugu-frontend/__screenshots__/
+
+# Local Git backups
+tugu-backend/.git-backend-backup/
+tugu-frontend/.git-frontend-backup/

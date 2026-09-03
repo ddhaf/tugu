@@ -1,0 +1,79 @@
+services:
+  backend:
+    build:
+      context: ./tugu-backend
+      dockerfile: Dockerfile
+    container_name: tugu-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./tugu-backend:/var/www
+    depends_on:
+      - db
+    env_file:
+      - ./tugu-backend/.env
+    environment:
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: tugu_backend
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    command: php -S 0.0.0.0:8000 -t public
+
+  backend-test:
+    build:
+      context: ./tugu-backend
+      dockerfile: Dockerfile
+    container_name: tugu-backend-test
+    volumes:
+      - ./tugu-backend:/var/www
+    depends_on:
+      - db
+    env_file:
+      - ./tugu-backend/.env
+    environment:
+      APP_ENV: testing
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: tugu_testing
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      CACHE_STORE: array
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+    command: ["tail", "-f", "/dev/null"]
+
+  frontend:
+    image: node:22
+    container_name: tugu-frontend
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./tugu-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+  db:
+    image: postgres:18
+    container_name: tugu-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: tugu_backend
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:
+    name: dhafaalif_postgres_data
